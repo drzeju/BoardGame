@@ -21,17 +21,21 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "role")
+    private String roleName;
     
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
 
-    public User(String firstName, String lastName, String email, String password, Role role) {
+    public User(String firstName, String lastName, String email, String password, String roleName, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.roleName = roleName;
         this.role = role;
     }
 
@@ -87,4 +91,8 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public String getRoleName() { return roleName; }
+
+    public void setRoleName(String roleName) { this.roleName = roleName; }
 }

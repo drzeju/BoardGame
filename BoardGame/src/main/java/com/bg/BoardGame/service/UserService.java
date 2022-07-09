@@ -60,7 +60,7 @@ public class UserService {
 
         //save the user-------------------------------------------------------------------------------------------------
         User user = new User(signupDto.getFirstName(), signupDto.getLastName(), signupDto.getEmail(),
-                encryptedpassword, role);
+                encryptedpassword, signupDto.getRoleName(), role);
 
         userRepository.save(user);
 
