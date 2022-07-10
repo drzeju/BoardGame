@@ -1,5 +1,7 @@
 package com.bg.BoardGame.model;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 
 @Entity

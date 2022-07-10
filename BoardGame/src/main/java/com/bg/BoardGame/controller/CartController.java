@@ -3,18 +3,21 @@ package com.bg.BoardGame.controller;
 import com.bg.BoardGame.common.ApiResponse;
 import com.bg.BoardGame.dto.cart.AddToCartDto;
 import com.bg.BoardGame.dto.cart.CartDto;
-import com.bg.BoardGame.model.Game;
 import com.bg.BoardGame.model.User;
 import com.bg.BoardGame.service.AuthenticationService;
 import com.bg.BoardGame.service.CartService;
-import com.bg.BoardGame.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
-@RequestMapping("/cart")
+//@RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
+@PreAuthorize("hasAnyRole({'USER', 'ADMIN'})")
+@RequestMapping("/user")
 public class CartController {
 
     @Autowired
@@ -25,7 +28,7 @@ public class CartController {
 
 
     //post cart api
-    @PostMapping("/add")
+    @PostMapping("/cart/add")
     public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDto addToCartDto,
                                                  @RequestParam("token") String token) {
         //authenticate the token
@@ -40,7 +43,7 @@ public class CartController {
     }
 
     //get all cart items for user
-    @GetMapping("/")
+    @GetMapping("/cart")
     public ResponseEntity<CartDto> getCartItems(@RequestParam("token") String token) {
         //authenticate the token
         authenticationService.getUser(token);
@@ -54,7 +57,7 @@ public class CartController {
     }
 
     //delete cart item
-    @DeleteMapping("/remove/{cartItemId}")
+    @DeleteMapping("/cart/remove/{cartItemId}")
     public ResponseEntity<ApiResponse> removeCartItem(@PathVariable("cartItemId") Integer itemId,
                                                       @RequestParam("token") String token) {
         //authenticate the token

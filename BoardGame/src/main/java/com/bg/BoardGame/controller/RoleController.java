@@ -1,20 +1,22 @@
 package com.bg.BoardGame.controller;
 
 import com.bg.BoardGame.common.ApiResponse;
-import com.bg.BoardGame.model.Category;
 import com.bg.BoardGame.model.Role;
-import com.bg.BoardGame.repository.CategoryRepository;
 import com.bg.BoardGame.repository.RoleRepository;
 import com.bg.BoardGame.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
-@RequestMapping("/role")
+//@RolesAllowed("ROLE_ADMIN")
+@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping("/admin")
 @RestController
 public class RoleController {
 
@@ -24,18 +26,18 @@ public class RoleController {
     @Autowired
     RoleRepository roleRepository;
 
-    @PostMapping("/create")
+    @PostMapping("/role/create")
     public ResponseEntity<ApiResponse> createRole(@RequestBody Role role) {
         roleService.createRole(role);
         return new ResponseEntity<>(new ApiResponse(true, "new role created"), HttpStatus.CREATED);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/role/list")
     public List<Role> listRole() {
         return roleService.listRole();
     }
 
-    @PostMapping("/update/{roleId}")
+    @PostMapping("/role/update/{roleId}")
     public ResponseEntity<ApiResponse> updateRole(@PathVariable("roleId") int roleId, @RequestBody Role role) {
         System.out.println("role id" + roleId);
         if (!roleService.findById(roleId)) {
@@ -46,7 +48,7 @@ public class RoleController {
     }
 
 
-    @DeleteMapping("/remove/{roleId}")
+    @DeleteMapping("/role/remove/{roleId}")
     public ResponseEntity<ApiResponse> removeRole(@PathVariable("roleId") Integer roleId) {
         Optional<Role> optionalRole = roleRepository.findById(roleId);
         if (!optionalRole.isPresent()) {

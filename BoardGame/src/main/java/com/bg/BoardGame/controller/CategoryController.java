@@ -7,13 +7,17 @@ import com.bg.BoardGame.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/category")
+//@RolesAllowed("ROLE_ADMIN")
+@PreAuthorize("hasRole('ADMIN')")
+@RequestMapping("/admin")
 public class CategoryController {
 
     @Autowired
@@ -22,18 +26,18 @@ public class CategoryController {
     @Autowired
     CategoryRepository categoryRepository;
 
-    @PostMapping("/create")
+    @PostMapping("/category/create")
     public ResponseEntity<ApiResponse> createCategory(@RequestBody Category category) {
         categoryService.createCategory(category);
         return new ResponseEntity<>(new ApiResponse(true, "new category created"), HttpStatus.CREATED);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/category/list")
     public List<Category> listCategory() {
         return categoryService.listCategory();
     }
 
-    @PostMapping("/update/{categoryId}")
+    @PostMapping("/category/update/{categoryId}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable("categoryId") int categoryId, @RequestBody Category category) {
         System.out.println("category id" + categoryId);
         if (!categoryService.findById(categoryId)) {
@@ -44,7 +48,7 @@ public class CategoryController {
     }
 
 
-    @DeleteMapping("/remove/{categoryId}")
+    @DeleteMapping("/category/remove/{categoryId}")
     public ResponseEntity<ApiResponse> removeCategory(@PathVariable("categoryId") Integer categoryId) {
         Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
         if (!optionalCategory.isPresent()) {

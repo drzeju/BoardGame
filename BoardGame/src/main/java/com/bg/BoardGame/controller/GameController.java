@@ -2,6 +2,7 @@ package com.bg.BoardGame.controller;
 
 import com.bg.BoardGame.common.ApiResponse;
 import com.bg.BoardGame.dto.GameDto;
+import com.bg.BoardGame.exceptions.CustomException;
 import com.bg.BoardGame.model.Category;
 import com.bg.BoardGame.model.Game;
 import com.bg.BoardGame.repository.CategoryRepository;
@@ -10,6 +11,7 @@ import com.bg.BoardGame.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +30,9 @@ public class GameController {
     @Autowired
     GameRepository gameRepository;
 
-    @PostMapping("/add")
+//    @RolesAllowed("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/add")
     public ResponseEntity<ApiResponse> createGame(@RequestBody GameDto gameDto) {
         Optional<Category> optionalCategory = categoryRepository.findById(gameDto.getCategoryId());
         if(!optionalCategory.isPresent()){
@@ -38,13 +42,28 @@ public class GameController {
         return new ResponseEntity<>(new ApiResponse(true,"game has been added"), HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
+//    @RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
+    @PreAuthorize("hasAnyRole({'USER', 'ADMIN'})")
+    @GetMapping("/user")
     public ResponseEntity<List<GameDto>> getGames(){
         List<GameDto> games = gameService.getAllGames();
         return new ResponseEntity<>(games, HttpStatus.OK);
     }
 
-    @PostMapping("/update/{gameId}")
+    @PreAuthorize("hasAnyRole({'USER', 'ADMIN'})")
+    @GetMapping("/user/{gameId}")
+    public ResponseEntity<Game> getGameById(@PathVariable("gameId") Integer gameId) {
+        Optional<Game> optionalGame = gameRepository.findById(gameId);
+        if(!optionalGame.isPresent()){
+            throw  new CustomException("Game does not exists.");
+        }
+        Game game = gameService.findById(gameId);
+        return new ResponseEntity<Game>(game, HttpStatus.OK);
+    }
+
+//    @RolesAllowed("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/update/{gameId}")
     public ResponseEntity<ApiResponse> updateGame(@PathVariable("gameId") Integer gameId, @RequestBody GameDto gameDto) throws Exception {
         Optional<Category> optionalCategory = categoryRepository.findById(gameDto.getCategoryId());
         if(!optionalCategory.isPresent()){
@@ -54,7 +73,9 @@ public class GameController {
         return new ResponseEntity<ApiResponse>(new ApiResponse(true, "game has been updated."), HttpStatus.OK);
     }
 
-    @DeleteMapping("/remove/{gameId}")
+//    @RolesAllowed("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/admin/remove/{gameId}")
     public ResponseEntity<ApiResponse> removeGame(@PathVariable("gameId") Integer gameId){
         Optional<Game> optionalGame = gameRepository.findById(gameId);
         if(!optionalGame.isPresent()){
