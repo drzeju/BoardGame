@@ -1,16 +1,12 @@
 package com.bg.BoardGame.controller;
 
 import com.bg.BoardGame.dto.ResponseDto;
-import com.bg.BoardGame.dto.user.SignupDto;
+import com.bg.BoardGame.dto.user.UserDto;
+import com.bg.BoardGame.dto.user.UserUpdateDto;
 import com.bg.BoardGame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.security.RolesAllowed;
+import org.springframework.web.bind.annotation.*;
 
 //@RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
 @PreAuthorize("hasRole('ADMIN')")
@@ -24,21 +20,24 @@ public class UserController {
 
 //===========================================    SIGNUP    ===========================================
     @PostMapping("/signup")
-    public ResponseDto signup(@RequestBody SignupDto signupDto){
-        return userService.signup(signupDto);
+    public ResponseDto signup(@RequestBody UserDto userDto){
+        return userService.signup(userDto);
     }
 
 
-////===========================================    SIGNIN    ===========================================
-//    @PostMapping("/signin")
-//    public SigninResponseDto signIn(@RequestBody SigninDto signinDto){
-//        return userService.signin(signinDto);
+//===========================================    UPDATE    ===========================================
+//
+//    @PostMapping("/update")
+//    public ResponseDto updateUser(@PathVariable("userId") Integer userId, @RequestBody UserUpdateDto userUpdateDto){
+//        try {
+//            userService.updateUser(userUpdateDto, userId);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        ;
 //    }
-//
-//
-////===========================================    SIGNOUT    ===========================================
-//    @PostMapping("/signout")
-//    public SignoutResponseDto signOut(@RequestBody User user) { return userService.signout(user); }
+
+
 
 
 }

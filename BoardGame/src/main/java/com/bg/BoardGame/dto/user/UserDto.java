@@ -1,7 +1,7 @@
 package com.bg.BoardGame.dto.user;
 
 
-public class SignupDto {
+public class UserDto {
     private String firstName;
     private String lastName;
     private String email;

@@ -9,11 +9,15 @@ import com.bg.BoardGame.repository.CategoryRepository;
 import com.bg.BoardGame.repository.GameRepository;
 import com.bg.BoardGame.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +33,8 @@ public class GameController {
 
     @Autowired
     GameRepository gameRepository;
+
+
 
 //    @RolesAllowed("ROLE_ADMIN")
     @PreAuthorize("hasRole('ADMIN')")
@@ -49,6 +55,21 @@ public class GameController {
         List<GameDto> games = gameService.getAllGames();
         return new ResponseEntity<>(games, HttpStatus.OK);
     }
+
+
+    @PreAuthorize("hasAnyRole({'USER', 'ADMIN'})")
+    @GetMapping("/user/sorted")
+    public ResponseEntity<List<Game>> getSortedGames(
+            @RequestParam(defaultValue = "0", required = false) Integer pageNo,
+            @RequestParam(defaultValue = "10", required = false) Integer pageSize,
+            @RequestParam(defaultValue = "id", required = false) String sortBy,
+            @RequestParam(defaultValue = "ASC", required = false) String sortDir) {
+
+        List<Game> list = gameService.getSortedGames(pageNo, pageSize, sortBy, sortDir);
+        return new ResponseEntity<List<Game>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
+
+
 
     @PreAuthorize("hasAnyRole({'USER', 'ADMIN'})")
     @GetMapping("/user/{gameId}")

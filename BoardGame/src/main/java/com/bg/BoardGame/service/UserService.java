@@ -4,8 +4,8 @@ import com.bg.BoardGame.dto.ResponseDto;
 //import com.bg.BoardGame.dto.user.SigninDto;
 //import com.bg.BoardGame.dto.user.SigninResponseDto;
 //import com.bg.BoardGame.dto.user.SignoutResponseDto;
-import com.bg.BoardGame.dto.user.SignupDto;
-import com.bg.BoardGame.exceptions.AuthenticationFailException;
+import com.bg.BoardGame.dto.user.UserDto;
+import com.bg.BoardGame.dto.user.UserUpdateDto;
 import com.bg.BoardGame.exceptions.CustomException;
 import com.bg.BoardGame.model.AuthenticationToken;
 import com.bg.BoardGame.model.Role;
@@ -35,24 +35,24 @@ public class UserService {
     RoleRepository roleRepository;
 
     @Transactional
-    public ResponseDto signup(SignupDto signupDto) {
+    public ResponseDto signup(UserDto userDto) {
 
         //check is user already present
-        if(Objects.nonNull(userRepository.findByEmail(signupDto.getEmail()))){
+        if(Objects.nonNull(userRepository.findByEmail(userDto.getEmail()))){
             throw new CustomException("user already present.");
         }
 
         //hash the password---------------------------------------------------------------------------------------------
-        String encryptedpassword = signupDto.getPassword();
+        String encryptedpassword = userDto.getPassword();
 
         try {
-            encryptedpassword = hashPassword(signupDto.getPassword());
+            encryptedpassword = hashPassword(userDto.getPassword());
         }
         catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
 
-        Optional<Role> optionalRole = roleRepository.findById(signupDto.getRoleId());
+        Optional<Role> optionalRole = roleRepository.findById(userDto.getRoleId());
         if(!optionalRole.isPresent()){
             throw new CustomException("role does not exist.");
         }
@@ -60,8 +60,8 @@ public class UserService {
         Role role = optionalRole.get();
 
         //save the user-------------------------------------------------------------------------------------------------
-        User user = new User(signupDto.getFirstName(), signupDto.getLastName(), signupDto.getEmail(),
-                encryptedpassword, signupDto.getRoleName(), role);
+        User user = new User(userDto.getFirstName(), userDto.getLastName(), userDto.getEmail(),
+                encryptedpassword, userDto.getRoleName(), role);
 
         userRepository.save(user);
 
@@ -74,6 +74,44 @@ public class UserService {
         return responseDto;
     }
 
+
+
+
+    public void updateUser(UserUpdateDto userUpdateDto, Integer userId) throws Exception {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (!optionalUser.isPresent()){
+            throw new Exception("user is not present!");
+        }
+        User user = optionalUser.get();
+
+        String encryptedpassword = userUpdateDto.getPassword();
+
+        try {
+            encryptedpassword = hashPassword(userUpdateDto.getPassword());
+        }
+        catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        Optional<Role> optionalRole = roleRepository.findById(userUpdateDto.getRoleId());
+        if(!optionalRole.isPresent()){
+            throw new CustomException("role does not exist.");
+        }
+
+        Role role = optionalRole.get();
+
+        user.setFirstName(userUpdateDto.getFirstName());
+        user.setLastName(userUpdateDto.getLastName());
+        user.setPassword(encryptedpassword);
+        user.setRoleName(userUpdateDto.getRoleName());
+        user.setRole(role);
+
+        userRepository.save(user);
+    }
+
+
+
+
     public String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
@@ -82,38 +120,5 @@ public class UserService {
                 .printHexBinary(digest).toUpperCase();
         return hash;
     }
-//
-//
-//    public SigninResponseDto signin(SigninDto signinDto) {
-//        //find user by email
-//        User user = userRepository.findByEmail(signinDto.getEmail());
-//
-//        if (Objects.isNull(user)){
-//            throw new AuthenticationFailException("user is not valid");
-//        }
-//
-//        //hash the password
-//        try {
-//            if (!user.getPassword().equals(hashPassword(signinDto.getPassword()))){
-//                throw new AuthenticationFailException("wrong password");
-//            }
-//        }
-//        catch (NoSuchAlgorithmException e){
-//            e.printStackTrace();
-//        }
-//
-//        //compare the password in DB
-//
-//        //if password match
-//        AuthenticationToken token = authenticationService.getToken(user);
-//
-//        //retrieve the token
-//        if (Objects.isNull(token)){
-//            throw new CustomException("token is not present.");
-//        }
-//        return new SigninResponseDto("success", token.getToken());
-//
-//        //return the response
-//    }
 
 }

@@ -6,7 +6,10 @@ import com.bg.BoardGame.model.Category;
 import com.bg.BoardGame.model.Game;
 import com.bg.BoardGame.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -73,4 +76,21 @@ public class GameService {
         }
         return optionalGame.get();
     }
+
+
+    public List<Game> getSortedGames(Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable paging = PageRequest.of(pageNo, pageSize, sort);
+
+        Page<Game> pagedResult = gameRepository.findAll(paging);
+
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Game>();
+        }
+    }
+
 }
