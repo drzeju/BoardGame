@@ -19,6 +19,16 @@ public class Game {
     @JoinColumn(name = "category_id")
     Category category;
 
+    public Game() {
+    }
+
+    public Game(String name, String imageUrl, double price, String description, Category category) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.price = price;
+        this.description = description;
+        this.category = category;
+    }
 
     public Integer getId() {
         return id;
@@ -60,13 +70,9 @@ public class Game {
         this.description = description;
     }
 
-    public Category getCategory() {
-        return category;
-    }
+    public Category getCategory() { return category; }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+    public void setCategory(Category category) { this.category = category; }
 
 
 }
