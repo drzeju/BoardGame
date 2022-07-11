@@ -1,17 +1,4 @@
 # BoardGame
-
-RabbitMQ:
-  port: 15672
-  username: guest
-  password: guest
-  
-BoardGame:
-  port: 8080
-  
-RabbitMQConsumer:
-  port: 9090
-	
-# BoardGame
 > Spring Boot restful api to manage boardgame store
 
 ## Table of Contents
@@ -42,7 +29,31 @@ List the ready features here:
 
 
 ## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
+- RabbitMQ:
+  - port: 15672
+  - username: guest
+  - password: guest
+  
+- BoardGame:
+  - port: 8080
+  
+- RabbitMQConsumer:
+  - port: 9090
+  
+- MySQL:
+  - url: //localhost:3306/boardgame
+  - username: root
+  - password: Root
+> On start DataLoader is inputing some data into the repositories to allow user to get along with app quicker.
+
+> After running the app open your browser and copy below url address:
+- http://localhost:8080/
+>This should redirect you to login page.
+
+> Use preload login data listed below to start working with the app:
+- username: admin@test.com
+- password: admin
+  
 
 Proceed to describe how to install / setup one's local environment / get started with the project.
 
