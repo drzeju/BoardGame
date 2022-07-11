@@ -1,9 +1,10 @@
 package com.bg.BoardGame.model;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
+@Component
 @Entity
 @Table(name = "users")
 public class User {

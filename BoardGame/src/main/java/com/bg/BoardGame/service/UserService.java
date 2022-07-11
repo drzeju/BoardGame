@@ -1,5 +1,6 @@
 package com.bg.BoardGame.service;
 
+import com.bg.BoardGame.dto.GameDto;
 import com.bg.BoardGame.dto.ResponseDto;
 //import com.bg.BoardGame.dto.user.SigninDto;
 //import com.bg.BoardGame.dto.user.SigninResponseDto;
@@ -8,6 +9,7 @@ import com.bg.BoardGame.dto.user.UserDto;
 import com.bg.BoardGame.dto.user.UserUpdateDto;
 import com.bg.BoardGame.exceptions.CustomException;
 import com.bg.BoardGame.model.AuthenticationToken;
+import com.bg.BoardGame.model.Game;
 import com.bg.BoardGame.model.Role;
 import com.bg.BoardGame.model.User;
 import com.bg.BoardGame.repository.RoleRepository;
@@ -19,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -122,4 +126,22 @@ public class UserService {
         return hash;
     }
 
+    public List<UserDto> getAllUsers() {
+        List<User> allUsers = userRepository.findAll();
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user: allUsers){
+            userDtos.add(getUserDto(user));
+        }
+        return userDtos;
+    }
+
+    private UserDto getUserDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        userDto.setRoleName(user.getRoleName());
+        userDto.setId(user.getId());
+        return userDto;
+    }
 }
