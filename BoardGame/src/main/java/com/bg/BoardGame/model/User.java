@@ -1,5 +1,6 @@
 package com.bg.BoardGame.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -98,4 +99,16 @@ public class User {
     public String getRoleName() { return roleName; }
 
     public void setRoleName(String roleName) { this.roleName = roleName; }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", roleName='" + roleName + '\'' +
+                '}';
+    }
 }
