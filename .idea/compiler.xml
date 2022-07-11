@@ -7,15 +7,18 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="BoardGame" />
+        <module name="RabbitMQConsumer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="BoardGame" target="11" />
+      <module name="RabbitMQConsumer" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="BoardGame" options="-parameters" />
+      <module name="RabbitMQConsumer" options="-parameters" />
     </option>
   </component>
 </project>
