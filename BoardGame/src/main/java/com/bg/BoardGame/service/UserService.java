@@ -70,7 +70,7 @@ public class UserService {
 
         authenticationService.saveConfirmationToken(authenticationToken);
 
-        ResponseDto responseDto = new ResponseDto("success", "dummy response");
+        ResponseDto responseDto = new ResponseDto("success", "User has been signed up");
         return responseDto;
     }
 
@@ -99,6 +99,7 @@ public class UserService {
         }
 
         Role role = optionalRole.get();
+
 
         user.setFirstName(userUpdateDto.getFirstName());
         user.setLastName(userUpdateDto.getLastName());

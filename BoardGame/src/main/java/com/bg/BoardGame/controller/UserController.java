@@ -26,16 +26,16 @@ public class UserController {
 
 
 //===========================================    UPDATE    ===========================================
-//
-//    @PostMapping("/update")
-//    public ResponseDto updateUser(@PathVariable("userId") Integer userId, @RequestBody UserUpdateDto userUpdateDto){
-//        try {
-//            userService.updateUser(userUpdateDto, userId);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        ;
-//    }
+
+    @PatchMapping("/update/{userId}")
+    public ResponseDto updateUser(@PathVariable("userId") Integer userId, @RequestBody UserUpdateDto userUpdateDto){
+        try {
+            userService.updateUser(userUpdateDto, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        };
+        return new ResponseDto("success", "User details has been updated");
+    }
 
 
 

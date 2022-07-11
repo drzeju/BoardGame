@@ -70,7 +70,6 @@ public class GameController {
     }
 
 
-
     @PreAuthorize("hasAnyRole({'USER', 'ADMIN'})")
     @GetMapping("/user/{gameId}")
     public ResponseEntity<Game> getGameById(@PathVariable("gameId") Integer gameId) {
@@ -84,7 +83,7 @@ public class GameController {
 
 //    @RolesAllowed("ROLE_ADMIN")
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/admin/update/{gameId}")
+    @PatchMapping("/admin/update/{gameId}")
     public ResponseEntity<ApiResponse> updateGame(@PathVariable("gameId") Integer gameId, @RequestBody GameDto gameDto) throws Exception {
         Optional<Category> optionalCategory = categoryRepository.findById(gameDto.getCategoryId());
         if(!optionalCategory.isPresent()){
