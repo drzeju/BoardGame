@@ -15,6 +15,15 @@ public class Category {
     private String decription;
     private String imageUrl;
 
+    public Category() {
+    }
+
+    public Category(String categoryName, String decription, String imageUrl) {
+        this.categoryName = categoryName;
+        this.decription = decription;
+        this.imageUrl = imageUrl;
+    }
+
     public Integer getId() {
         return id;
     }
