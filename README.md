@@ -63,6 +63,6 @@ List the ready features here:
 By deafault application DDL setting is set up to 'create' value.
 > If you want to change this property go to:
 * BoardGame/src/main/resources/application.properties
-> and change this line (for example to update or none)
+> and change this line (for example to 'update' or 'none')
 * spring.jpa.hibernate.ddl-auto=create
 
