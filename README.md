@@ -41,7 +41,8 @@ List the ready features here:
   - port: 9090
   
 - MySQL:
-  - url: //localhost:3306/boardgame
+  - port: 3306
+  - database: boardgame
   - username: root
   - password: Root
 > On start DataLoader is inputing some data into the repositories to allow user to get along with app quicker.
@@ -54,13 +55,14 @@ List the ready features here:
 - username: admin@test.com
 - password: admin
   
-
-Proceed to describe how to install / setup one's local environment / get started with the project.
+> If you want to logout to change user for example to test USER role try:
+- http://localhost:8080/logout
 
 
 ## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
-
-`write-your-code-here`
+By deafault application DDL setting is set up to 'create' value.
+> If you want to change this property go to:
+* BoardGame/src/main/resources/application.properties
+> and change this line (for example to update or none)
+* spring.jpa.hibernate.ddl-auto=create
 
