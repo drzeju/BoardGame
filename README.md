@@ -66,3 +66,9 @@ By deafault application DDL setting is set up to 'create' value.
 > and change this line (for example to 'update' or 'none')
 * spring.jpa.hibernate.ddl-auto=create
 
+In BoardGame/src/main/java/com/bg/BoardGame/config/DataLoader class you can set what data 
+
+you want to insert into your database on application start. 
+
+### It is very important to don't change the Role and User inserts.
+
